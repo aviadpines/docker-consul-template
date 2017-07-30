@@ -22,5 +22,9 @@ if [ "$(stat -c %u /consul-template/output)" != "$(id -u consul-template)" ]; th
   chown consul-template:consul-template /consul-template/output
 fi
 
+if [ ! -z "$LOG_LEVEL" ]; then
+    LOG_LINE="-log-level $LOG_LEVEL"
+fi
+
 echo "running execution command /bin/consul-template $@ $TEMPLATES"
-/usr/local/bin/docker-entrypoint.sh $TEMPLATES "$@"
+/usr/local/bin/docker-entrypoint.sh $TEMPLATES $LOG_LINE "$@"
