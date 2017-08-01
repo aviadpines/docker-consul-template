@@ -9,9 +9,13 @@ echo "retrieving templates: https://codeload.github.com/${GIT_USER}/${GIT_REPO}/
 cd /consul-template/data && curl -s https://codeload.github.com/${GIT_USER}/${GIT_REPO}/tar.gz/master | tar -xz --strip=2 ${GIT_REPO}-master/${GIT_PATH}
 
 # concat all the templates
-TEMPLATES=$(find /consul-template/data/ -name "*.tpl" | \
-    sed -r 's|/consul-template/data/(.*).tpl|-template /consul-template/data/\1.tpl:/consul-template/output/\1.yml|g' | \
+TEMPLATES_YML=$(find /consul-template/data/ -name "*.yml.tpl" | \
+    sed -r 's|/consul-template/data/(.*).yml.tpl|-template /consul-template/data/\1.yml.tpl:/consul-template/output/\1.yml|g' | \
     tr '\n' ' ')
+TEMPLATES_PROPERTIES=$(find /consul-template/data/ -name "*.properties.tpl" | \
+    sed -r 's|/consul-template/data/(.*).properties.tpl|-template /consul-template/data/\1.properties.tpl:/consul-template/output/\1.properties|g' | \
+    tr '\n' ' ')
+TEMPLATES="$TEMPLATES_YML $TEMPLATES_PROPERTIES"
 echo "templates string: $TEMPLATES"
 
 # If the data or config dirs are bind mounted then chown them.
