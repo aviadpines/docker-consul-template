@@ -59,4 +59,4 @@ if [ ! -z "$LOG_LEVEL" ]; then
 fi
 
 echo "running execution command /bin/consul-template $@ $TEMPLATES"
-/usr/local/bin/docker-entrypoint.sh $TEMPLATES $LOG_LINE "$@"
+/usr/local/bin/docker-entrypoint.sh $TEMPLATES $LOG_LINE
